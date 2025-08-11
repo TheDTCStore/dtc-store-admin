@@ -1,17 +1,28 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/AuthContext";
+import { toast } from "sonner";
 
-export default function Login({ onLogin }) {
+export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const { authLogin } = useAuth();
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
-        if (username === "admin" && password === "123456") {
-            onLogin(true);
-        } else {
-            alert("用户名或密码错误");
+        setLoading(true);
+        try {
+            await authLogin(username.trim(), password.trim());
+            toast.success("登录成功");
+            navigate("/");
+        } catch (err) {
+            toast.error(err.message || "登录失败");
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -32,6 +43,7 @@ export default function Login({ onLogin }) {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
+                        autoFocus
                     />
                 </div>
                 <div>
@@ -44,8 +56,8 @@ export default function Login({ onLogin }) {
                         required
                     />
                 </div>
-                <Button type="submit" className="w-full">
-                    登录
+                <Button type="submit" className="w-full" disabled={loading}>
+                    {loading ? "登录中..." : "登录"}
                 </Button>
             </form>
         </div>

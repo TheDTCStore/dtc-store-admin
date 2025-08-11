@@ -92,7 +92,7 @@ export default function Orders() {
     });
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 p-6">
             <div>
                 <h1 className="text-2xl font-bold text-gray-900">订单管理</h1>
                 <p className="text-gray-600">管理您的所有订单和配送状态</p>

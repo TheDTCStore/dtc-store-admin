@@ -6,16 +6,18 @@ import {
     Package, 
     Users, 
     Settings, 
-    BarChart3, 
+    Wrench, 
     Menu,
     ChevronLeft,
     ShoppingCart,
     Tags
 } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 const menuItems = [
     { id: "dashboard", label: "仪表板", icon: Home, path: "/" },
     { id: "users", label: "用户管理", icon: Users, path: "/users" },
+    { id: "config", label: "首页配置", icon: Wrench, path: "/config" },
     { id: "categories", label: "分类管理", icon: Tags, path: "/categories" },
     { id: "products", label: "商品管理", icon: Package, path: "/products" },
     { id: "orders", label: "订单管理", icon: ShoppingCart, path: "/orders" },
@@ -24,6 +26,7 @@ const menuItems = [
 
 export default function DashboardLayout() {
     const [sidebarOpen, setSidebarOpen] = useState(true);
+    const { authLogout } = useAuth()
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -34,6 +37,11 @@ export default function DashboardLayout() {
     const handleMenuClick = (path) => {
         navigate(path);
     };
+
+    const handleLogout = () => {
+    authLogout()
+    navigate("/login");
+};
 
     return (
         <div className="flex h-screen bg-gray-50">
@@ -88,7 +96,7 @@ export default function DashboardLayout() {
                         </h2>
                         <div className="flex items-center space-x-4">
                             <span className="text-sm text-gray-600">管理员</span>
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" onClick={handleLogout}>
                                 退出登录
                             </Button>
                         </div>
@@ -96,7 +104,7 @@ export default function DashboardLayout() {
                 </header>
 
                 {/* Page Content */}
-                <main className="flex-1 overflow-auto p-6">
+                <main className="flex-1 overflow-auto">
                     <Outlet />
                 </main>
             </div>
