@@ -127,7 +127,7 @@ export default function ProductDetail() {
                                             Object.entries(productMetaData.member_benefits).map(
                                                 ([key, value]) => (
                                                     <li key={key}>
-                                                        {key}：<span className="font-medium">{String(value)}</span>
+                                                        {key}:<span className="font-medium">{String(value)}</span>
                                                     </li>
                                                 )
                                             )}

@@ -20,6 +20,7 @@ export default function ProductAddModal() {
         name: "",
         description: "",
         category_id: null,
+        base_price: "",
         is_active: true,
     });
     const [categories, setCategories] = useState([]);
@@ -29,7 +30,8 @@ export default function ProductAddModal() {
         setIsChanged(
             formData.name.trim() !== "" &&
             formData.description.trim() !== "" &&
-            formData.category_id !== null
+            formData.category_id !== null &&
+            formData.base_price.trim() !== "" && !isNaN(Number(formData.base_price))
         );
     }, [formData]);
 
@@ -62,6 +64,7 @@ export default function ProductAddModal() {
                 name: formData.name.trim(),
                 description: formData.description.trim(),
                 category_id: formData.category_id,
+                base_price: parseFloat(formData.base_price), // 传 float
                 is_active: formData.is_active,
             });
             toast.success("新增商品成功");
@@ -104,6 +107,19 @@ export default function ProductAddModal() {
                             ))}
                         </SelectContent>
                     </Select>
+                </div>
+                <Separator />
+                {/* 新增 base_price 输入框 */}
+                <div>
+                    <p className="font-medium text-muted-foreground">基础价格</p>
+                    <Input
+                        type="number"
+                        step="0.0"
+                        min="0"
+                        value={formData.base_price}
+                        onChange={handleChange("base_price")}
+                        placeholder="请输入基础价格"
+                    />
                 </div>
                 <Separator />
                 <div>
